@@ -8,12 +8,12 @@ const app = express();
 // Enable CORS access to this server
 app.use(cors());
 
-app.get("/", async (req, res) => {
+app.get("/sightings", async (req, res) => {
   const sightings = await getSightings();
   res.json(sightings);
 });
 
-app.get("/:sightingIndex", async (req, res) => {
+app.get("/sightings/:sightingIndex", async (req, res) => {
   const sightings = await getSightings();
   res.json(sightings[req.params.sightingIndex]);
 });
