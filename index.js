@@ -1,8 +1,9 @@
-import cors from "cors";
-import express from "express";
-import { getSightings } from "./utils.js";
+const cors = require('cors')
+const express = require('express')
+const { getSightings } = require('./utils.js')
+require('dotenv').config()
 
-const PORT = 3000;
+const PORT = process.env.PORT;
 const app = express();
 
 // Enable CORS access to this server
