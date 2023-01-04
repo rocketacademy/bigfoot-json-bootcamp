@@ -17,6 +17,13 @@ app.get("/sightings/:sightingIndex", async (req, res) => {
   res.json(sightings[index]);
 });
 
+app.get("/sightings", async (req, res) => {
+  let year = req.query.year;
+  const sightings = await getSightings();
+  const filteredSightings = sightings.filter((element) => element.YEAR == year);
+  res.json(filteredSightings);
+});
+
 app.listen(PORT, () => {
   console.log(`Express app listening on port ${PORT}!`);
 });
