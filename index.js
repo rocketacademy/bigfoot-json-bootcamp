@@ -6,14 +6,44 @@ require("dotenv").config();
 
 const PORT = process.env.PORT;
 const app = express();
+const corsOptions = {
+  origin: "http://localhost:3001",
+};
 
-app.use(cors());
+app.use(cors(corsOptions));
 
-app.get("/sightings", async (req, res) => {
+app.get("/links", async (req, res) => {
+  let { filter } = req.query;
+  const links = [];
+  let sightings = await getSightings();
+
+  if (!filter) {
+    filter = "";
+  }
+
+  sightings.map((value, index) => {
+    if (value.SEASON) {
+      if (value.SEASON.includes(filter)) {
+        const link = {
+          INDEX: index,
+          REPORT_NUMBER: value.REPORT_NUMBER,
+          YEAR: value.YEAR,
+          MONTH: value.MONTH,
+        };
+        links.push(link);
+      }
+    }
+  });
+  return res.json(links);
+});
+
+app.get("/sightings/:id", async (req, res) => {
   const sightings = await getSightings();
-  res.json(sightings);
+  const { id } = req.params;
+  const data = sightings[id];
+  return res.json(data);
 });
 
 app.listen(PORT, () => {
-  console.log(`Express app listening on port ${PORT}!`);
+  console.log(`Express listening on PORT:${PORT}`);
 });
