@@ -27,6 +27,9 @@ class SightingsController {
             REPORT_NUMBER: value.REPORT_NUMBER,
             YEAR: value.YEAR,
             MONTH: value.MONTH,
+            SEASON: value.SEASON,
+            STATE: value.STATE,
+            REPORT_CLASS: value.REPORT_CLASS,
           };
           links.push(link);
         }
