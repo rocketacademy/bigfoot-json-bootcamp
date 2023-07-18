@@ -2,9 +2,10 @@
   "name": "bigfoot-json-bootcamp",
   "version": "1.0.0",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "npx nodemon index.js"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "express": "^4.18.1"
   },
