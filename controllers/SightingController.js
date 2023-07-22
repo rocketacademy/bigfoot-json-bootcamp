@@ -3,27 +3,37 @@ const { getSightings } = require("../utils.js");
 class SightingController {
   constructer() {}
 
+  cleanSightingData = (sightingData) => {
+    /// Clean Data
+    // remove those not in clean year format
+    sightingData = sightingData.filter((sighting) =>
+      Number.isInteger(Number(sighting.YEAR))
+    );
+    // remove those undefined month
+    sightingData = sightingData.filter((sighting) => sighting.MONTH);
+
+    // add ID info to persist index after filtering/ sorting
+    sightingData = sightingData.map((sighting, index) => ({
+      ...sighting,
+      id: index,
+    }));
+
+    return sightingData;
+  };
+
   listSighting = async (req, res) => {
-    const sightings = await getSightings();
+    let sightings = this.cleanSightingData(await getSightings());
     res.json(sightings[req.params.sightingIndex]);
   };
 
   listSightingsWithFilterAndSort = async (req, res) => {
-    const sightings = await getSightings();
+    const sightings = this.cleanSightingData(await getSightings());
     const season = req.params.season;
     const year = req.params.year;
     const month = req.params.month;
     const sortYear = req.params.sortYear;
     const sortState = req.params.sortState;
     let results = sightings;
-
-    /// Clean Data
-    // remove those not in clean year format
-    results = results.filter((sighting) =>
-      Number.isInteger(Number(sighting.YEAR))
-    );
-    // remove those undefined month
-    results = results.filter((sighting) => sighting.MONTH);
 
     /// Filter data according to user input
     if (year !== "0") {

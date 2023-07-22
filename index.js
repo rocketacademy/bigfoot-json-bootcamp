@@ -7,20 +7,14 @@ const app = express();
 
 const SightingController = require("./controllers/SightingController");
 const sightingController = new SightingController();
-
 const SightingRouter = require("./routers/SightingRouter");
 const sightingRouter = new SightingRouter(sightingController, express);
 
 // Setting up middleware
 app.use(cors());
-// app.use(express.json());
-// app.use(express.urlencoded({ extended: true }));
-
 app.use("/sightings", sightingRouter.route());
 app.use("/", (req, res) => {
   res.send("Incorrect Path");
 });
 
-app.listen(PORT, () => {
-  console.log(`Express app listening on port ${PORT}!`);
-});
+app.listen(PORT);
