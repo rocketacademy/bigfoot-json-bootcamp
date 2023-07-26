@@ -1,36 +1,63 @@
-const pg = require('pg');
-const { Client } = pg;
+const express = require("express");
+const pg = require("pg");
+const { Pool } = pg;
 
 // set the way we will connect to the server
 const pgConnectionConfigs = {
-  user: 'postgres', //sudo su postgres
-  host: 'localhost',
-  database: 'db01', //psql*
+  user: "postgres", //sudo su postgres
+  host: "localhost",
+  database: "db01", //psql*
   port: 5432, // Postgres server always runs on this port
 };
 
 // create the var we'll use
-const client = new Client(pgConnectionConfigs);
+const pool = new Pool(pgConnectionConfigs);
 
-// make the connection to the server
-client.connect();
+const app = express();
 
-// create the query done callback
-const whenQueryDone = (error, result) => {
-  // this error is anything that goes wrong with the query
-  if (error) {
-    console.log('error', error);
-  } else {
-    // rows key has the data
-    console.log(result.rows);
-  }
+// Code to retireve all rows from the students table
+app.get("/", (request, response) => {
+  console.log("request came in");
 
-  // close the connection
-  client.end();
-};
+  const whenDoneWithQuery = (error, result) => {
+    if (error) {
+      console.log("Error executing query", error.stack);
+      response.status(503).send(result.rows);
+      return;
+    }
+    console.log(result.rows[0].name);
+    response.send(result.rows);
+  };
 
-// write the SQL query
-const sqlQuery = `INSERT INTO students (first_name, last_name, mobile, gender) VALUES ('Eric', 'Marsh', 874480753, true)`;
+  // Query using pg.Pool instead of pg.Client
+  pool.query("SELECT * FROM students", whenDoneWithQuery);
+});
 
-// run the SQL query
-client.query(sqlQuery, whenQueryDone);
+// Code to insert a student into the students table
+app.post("/", (request, response) => {
+  console.log("request came in");
+  //console.log(request.body);
+
+  let first_name = request.body.first_name;
+  let last_name = request.body.last_name;
+  let mobile = request.body.mobile;
+  let gender = request.body.gender;
+
+  const whenDoneWithQuery = (error, result) => {
+    if (error) {
+      console.log("Error executing query", error.stack);
+      response.status(503).send(result.rows);
+      return;
+    }
+    //console.log(result.rows);
+    response.send(result.rows);
+  };
+
+  // Query using pg.Pool instead of pg.Client
+  pool.query(
+    `INSERT INTO students (first_name, last_name, mobile, gender) VALUES ('${first_name}', '${last_name}', ${mobile}, ${gender})`,
+    whenDoneWithQuery
+  );
+});
+
+app.listen(3004);
