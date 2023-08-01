@@ -5,11 +5,11 @@ const { Pool } = pg;
 
 // set the way we will connect to the server
 const pgConnectionConfigs = {
-  user: "postgres", //sudo su postgres  
-  //password: process.env.PASSWORD, //For laptop, no need for pc (*Personal referrence)
+  user: "postgres", //sudo su postgres
+  password: process.env.PASSWORD, //For laptop, no need for pc (*Personal referrence)
   host: "localhost",
-  //database: "postgres", //psql *
-  database: "db01", //psql*
+  database: "postgres", //psql *
+  //database: "db01", //psql*
   port: 5432, // Postgres server always runs on this port
 };
 
@@ -57,8 +57,8 @@ app.post("/", (request, response) => {
   let mobile = request.body.mobile;
   let gender = request.body.gender;
 
-   // Validate input
-   if (!first_name || !last_name || !mobile || !gender ) {
+  // Validate input
+  if (!first_name || !last_name || !mobile || !gender) {
     // If any required field is missing or gender is not a boolean, return an error response.
     console.log("No input received for one or more of the field.");
     response.status(400).send("Missing input");
@@ -66,24 +66,30 @@ app.post("/", (request, response) => {
   }
   // Check if first_name and last_name contain only alphanumeric characters
   const alphanumericRegex = /^[a-zA-Z0-9]+$/;
-  if (!alphanumericRegex.test(first_name) || !alphanumericRegex.test(last_name)) {
+  if (
+    !alphanumericRegex.test(first_name) ||
+    !alphanumericRegex.test(last_name)
+  ) {
     console.log("First name or last name contains invalid characters.");
-    response.status(400).send("First name or last name contains invalid characters.");
+    response
+      .status(400)
+      .send("First name or last name contains invalid characters.");
     return;
   }
-  if (!Number.isInteger(mobile)){
+  if (!Number.isInteger(mobile)) {
     console.log("Invalid input for mobile.");
     response.status(400).send("Invalid input for mobile.");
     return;
   }
-  if (typeof gender !== "boolean"){
+  if (typeof gender !== "boolean") {
     console.log("Invalid input for gender. Only true or false is accepted");
-    response.status(400).send("Invalid input for gender. Only true or false is accepted.");
+    response
+      .status(400)
+      .send("Invalid input for gender. Only true or false is accepted.");
     return;
   }
 
   const whenDoneWithQuery = (error, result) => {
-    
     if (error) {
       console.log("Error executing post", error.stack);
       response.status(503).send(result);
@@ -118,7 +124,7 @@ app.put("/", (request, response) => {
   let value = request.body.value;
 
   // Validate input
-  if (!id_field || !id_value || !field || !value ) {
+  if (!id_field || !id_value || !field || !value) {
     // If any required field is missing or gender is not a boolean, return an error response.
     console.log("No input received for one or more of the field.");
     response.status(400).send("Missing input");
@@ -126,35 +132,36 @@ app.put("/", (request, response) => {
   }
   // Check if first_name and last_name contain only alphanumeric characters
   const alphanumericRegex = /^[a-zA-Z0-9]+$/;
-  switch (field){
-    case ("id"||"mobile"):
-      if (!Number.isInteger(value)){
+  switch (field) {
+    case "id" || "mobile":
+      if (!Number.isInteger(value)) {
         console.log("Invalid input. Input must be numeric");
         response.status(400).send("Invalid input. Input must be numeric.");
         return;
       }
       break;
-    case ("first_name"||"last_name"):
-      if (!alphanumericRegex.test(value) ) {
+    case "first_name" || "last_name":
+      if (!alphanumericRegex.test(value)) {
         console.log("Invalid characters. Name must be alphanumeric.");
-        response.status(400).send("Invalid characters. Name must be alphanumeric.");
+        response
+          .status(400)
+          .send("Invalid characters. Name must be alphanumeric.");
         return;
       }
       break;
-    case("gender"):
-    if (typeof gender !== "boolean"){
-      console.log("Invalid input for gender. Only true or false is accepted");
-      response.status(400).send("Invalid input for gender. Only true or false is accepted.");
-      return;
-    }
-    break;
-    
+    case "gender":
+      if (typeof gender !== "boolean") {
+        console.log("Invalid input for gender. Only true or false is accepted");
+        response
+          .status(400)
+          .send("Invalid input for gender. Only true or false is accepted.");
+        return;
+      }
+      break;
+
     default:
       break;
   }
-  
-  
-  
 
   const whenDoneWithQuery = (error, result) => {
     if (error) {
