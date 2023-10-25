@@ -2,7 +2,6 @@ const express = require("express");
 const cors = require("cors");
 
 const app = express();
-const { getSightings } = require("./utils.js");
 
 // .env setup
 require("dotenv").config();
@@ -11,21 +10,28 @@ const PORT = process.env.PORT;
 // import controllers
 const FootController = require("./controllers/FootController.js");
 const footController = new FootController();
+const SightingController = require("./controllers/SightingController.js");
+const sightingController = new SightingController();
 
 // import routers
 const FootRouter = require("./routers/FootRouter.js");
 const footRouter = new FootRouter(footController, express);
+const SightingRouter = require("./routers/SightingRouter.js");
+const sightingRouter = new SightingRouter(sightingController, express);
 
 // Setting up middleware
 app.use(express.json());
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 
-app.use("/foot", footRouter.route());
+// Routing requests
 
-app.get("/sightings", async (req, res) => {
-  const sightings = await getSightings();
-  res.json(sightings);
+app.use("/foot", footRouter.route());
+app.use("/sightings", sightingRouter.route());
+
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send("Something went wrong!");
 });
 
 app.listen(PORT, () => {
