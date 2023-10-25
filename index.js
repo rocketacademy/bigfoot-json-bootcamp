@@ -1,4 +1,6 @@
 const express = require("express");
+const cors = require("cors");
+
 const app = express();
 const { getSightings } = require("./utils.js");
 
@@ -16,12 +18,10 @@ const footRouter = new FootRouter(footController, express);
 
 // Setting up middleware
 app.use(express.json());
+app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 
 app.use("/foot", footRouter.route());
-app.use("/", (req, res) => {
-  res.send("Incorrect path");
-});
 
 app.get("/sightings", async (req, res) => {
   const sightings = await getSightings();
