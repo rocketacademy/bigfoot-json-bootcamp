@@ -4,13 +4,25 @@ class SightingController {
   async getAllSightings(req, res) {
     try {
       const sightings = await getSightings();
-      res.json(sightings);
+
+      const filteredSightings = Object.keys(req.query).reduce((acc, key) => {
+        const field = key.toUpperCase();
+
+        return acc.filter(
+          (sighting) =>
+            sighting[field] &&
+            String(sighting[field]) === String(req.query[key])
+        );
+      }, sightings);
+
+      res.json(filteredSightings);
     } catch (error) {
       res
         .status(400)
         .json({ message: "Error fetching sightings", error: error.message });
     }
   }
+
   async getSightingByIndex(req, res) {
     try {
       const sightings = await getSightings();
