@@ -5,15 +5,33 @@ class SightingController {
     try {
       const sightings = await getSightings();
 
+      // Filtering for all items based on exact equality
       const filteredSightings = Object.keys(req.query).reduce((acc, key) => {
-        const field = key.toUpperCase();
-
-        return acc.filter(
-          (sighting) =>
-            sighting[field] &&
-            String(sighting[field]) === String(req.query[key])
-        );
+        if (key !== "sortBy" && key !== "order") {
+          const field = key.toUpperCase();
+          return acc.filter(
+            (sighting) =>
+              sighting[field] &&
+              String(sighting[field]) === String(req.query[key])
+          );
+        }
+        return acc;
       }, sightings);
+
+      // Sorting logic by ascending or descending
+      if (req.query.sortBy) {
+        const sortBy = req.query.sortBy.toUpperCase();
+        const order = req.query.order || "asc"; // default to ascending
+
+        filteredSightings.sort((a, b) => {
+          const valA = a[sortBy] ? String(a[sortBy]).toLowerCase() : "";
+          const valB = b[sortBy] ? String(b[sortBy]).toLowerCase() : "";
+
+          if (valA < valB) return order === "asc" ? -1 : 1;
+          if (valA > valB) return order === "asc" ? 1 : -1;
+          return 0;
+        });
+      }
 
       res.json(filteredSightings);
     } catch (error) {
