@@ -1,9 +1,12 @@
-const BaseController = require("./baseController");
-
-class FootController extends BaseController {
+class BaseController {
   constructor({ pool, tblName }) {
-    super({ pool, tblName });
+    this.pool = pool;
+    this.tblName = tblName;
   }
+
+  baseMethod = (req, res) => {
+    return res.send("This is my base controller");
+  };
 
   getAll = (req, res) => {
     const whenDoneWithQuery = (error, result) => {
@@ -16,9 +19,13 @@ class FootController extends BaseController {
       res.send(result.rows);
     };
 
-    const sqlQuery = `SELECT * FROM ${this.tblName};`;
+    const sqlQuery = "SELECT * FROM students;";
     this.pool.query(sqlQuery, whenDoneWithQuery);
+  };
+
+  findById = (req, res) => {
+    const { id } = req.params;
   };
 }
 
-module.exports = FootController;
+module.exports = BaseController;

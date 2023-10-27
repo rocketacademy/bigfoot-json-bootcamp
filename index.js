@@ -1,15 +1,26 @@
 const express = require("express");
 const cors = require("cors");
+const pg = require("pg");
+// .env setup
+require("dotenv").config();
+
+// set up DB connection
+const { Pool } = pg;
+const pgConnectionConfigs = {
+  user: process.env.DB_USERNAME,
+  host: process.env.DB_HOST,
+  database: process.env.DB_DATABASE,
+  port: process.env.DB_PORT,
+};
+const pool = new Pool(pgConnectionConfigs);
 
 const app = express();
 
-// .env setup
-require("dotenv").config();
 const PORT = process.env.PORT;
 
 // import controllers
 const FootController = require("./controllers/FootController.js");
-const footController = new FootController();
+const footController = new FootController({ tblName: "students", pool });
 const SightingController = require("./controllers/SightingController.js");
 const sightingController = new SightingController();
 

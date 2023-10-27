@@ -7,7 +7,7 @@ class FootRouter {
   route = () => {
     let router = this.express.Router();
 
-    router.get("/", this.controller.list);
+    router.get("/getAll", this.controller.getAll);
 
     return router;
   };
