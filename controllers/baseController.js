@@ -8,23 +8,31 @@ class BaseController {
     return res.send("This is my base controller");
   };
 
-  getAll = (req, res) => {
-    const whenDoneWithQuery = (error, result) => {
-      if (error) {
-        console.log("Error executing query", error.stack);
-        res.status(503).send("Error executing query");
-        return;
-      }
-      console.log(result.rows[0].name);
-      res.send(result.rows);
-    };
+  getAll = async (req, res) => {
+    const sqlQuery = `SELECT * FROM ${this.tblName};`;
 
-    const sqlQuery = "SELECT * FROM students;";
-    this.pool.query(sqlQuery, whenDoneWithQuery);
+    try {
+      // Better way to write via async await
+      const data = await this.pool.query(sqlQuery);
+      return res.json({ success: true, data: data.rows });
+    } catch (err) {
+      return res.status(400).json({ success: false, msg: err });
+    }
   };
 
-  findById = (req, res) => {
+  findById = async (req, res) => {
     const { id } = req.params;
+    const sqlQuery = `SELECT * FROM ${this.tblName} WHERE id=${id};`;
+
+    try {
+      const data = await this.pool.query(sqlQuery);
+      if (data.rows.length === 0) {
+        return res.status(404).json({ success: false, msg: `student missing` });
+      }
+      return res.json({ success: true, data: data.rows });
+    } catch (err) {
+      return res.status(400).json({ success: false, msg: err });
+    }
   };
 }
 
