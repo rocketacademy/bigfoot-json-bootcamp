@@ -1,39 +1,64 @@
 class BaseController {
-  constructor({ pool, tblName }) {
-    this.pool = pool;
-    this.tblName = tblName;
+  constructor(model) {
+    this.model = model;
   }
 
-  baseMethod = (req, res) => {
-    return res.send("This is my base controller");
-  };
-
-  getAll = async (req, res) => {
-    const sqlQuery = `SELECT * FROM ${this.tblName};`;
-
+  async getAll(req, res) {
     try {
-      // Better way to write via async await
-      const data = await this.pool.query(sqlQuery);
-      return res.json({ success: true, data: data.rows });
-    } catch (err) {
-      return res.status(400).json({ success: false, msg: err });
-    }
-  };
+      let whereConditions = {};
 
-  findById = async (req, res) => {
-    const { id } = req.params;
-    const sqlQuery = `SELECT * FROM ${this.tblName} WHERE id=${id};`;
-
-    try {
-      const data = await this.pool.query(sqlQuery);
-      if (data.rows.length === 0) {
-        return res.status(404).json({ success: false, msg: `student missing` });
+      // Filtering logic
+      for (let key in req.query) {
+        if (key !== "sortBy" && key !== "order") {
+          whereConditions[key] = req.query[key];
+        }
       }
-      return res.json({ success: true, data: data.rows });
-    } catch (err) {
-      return res.status(400).json({ success: false, msg: err });
+
+      let orderConditions = [];
+      if (req.query.sortBy) {
+        const order = req.query.order || "asc"; // default to ascending
+        orderConditions.push([req.query.sortBy, order]);
+      }
+
+      const records = await this.model.findAll({
+        where: whereConditions,
+        order: orderConditions,
+      });
+
+      res.json(records);
+    } catch (error) {
+      res
+        .status(400)
+        .json({ message: `Error fetching records`, error: error.message });
     }
-  };
+  }
+
+  async getById(req, res) {
+    try {
+      const record = await this.model.findByPk(req.params.id);
+
+      if (!record) {
+        return res.status(404).json({ message: "Record not found" });
+      }
+
+      res.json(record);
+    } catch (error) {
+      res
+        .status(400)
+        .json({ message: "Error fetching record", error: error.message });
+    }
+  }
+
+  async createOne(req, res) {
+    try {
+      const newRecord = await this.model.create(req.body);
+      res.status(201).json(newRecord);
+    } catch (error) {
+      res
+        .status(400)
+        .json({ message: "Error creating record", error: error.message });
+    }
+  }
 }
 
 module.exports = BaseController;

@@ -4,29 +4,20 @@ const pg = require("pg");
 // .env setup
 require("dotenv").config();
 
-// set up DB connection
-const { Pool } = pg;
-const pgConnectionConfigs = {
-  user: process.env.DB_USERNAME,
-  host: process.env.DB_HOST,
-  database: process.env.DB_DATABASE,
-  port: process.env.DB_PORT,
-};
-const pool = new Pool(pgConnectionConfigs);
-
 const app = express();
 
 const PORT = process.env.PORT;
 
+// importing DB
+const db = require("./db/models/index");
+const { sighting } = db;
+
 // import controllers
-const FootController = require("./controllers/FootController.js");
-const footController = new FootController({ tblName: "students", pool });
 const SightingController = require("./controllers/SightingController.js");
-const sightingController = new SightingController();
+const sightingController = new SightingController(sighting);
 
 // import routers
-const FootRouter = require("./routers/FootRouter.js");
-const footRouter = new FootRouter(footController, express);
+
 const SightingRouter = require("./routers/SightingRouter.js");
 const sightingRouter = new SightingRouter(sightingController, express);
 
@@ -37,7 +28,6 @@ app.use(express.urlencoded({ extended: false }));
 
 // Routing requests
 
-app.use("/foot", footRouter.route());
 app.use("/sightings", sightingRouter.route());
 
 app.use((err, req, res, next) => {

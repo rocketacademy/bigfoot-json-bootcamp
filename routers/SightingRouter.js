@@ -8,11 +8,15 @@ class SightingRouter {
   setupRoutes() {
     this.router.get(
       "/",
-      this.sightingController.getAllSightings.bind(this.sightingController)
+      this.sightingController.getAll.bind(this.sightingController)
     );
     this.router.get(
-      "/:sightingIndex",
-      this.sightingController.getSightingByIndex.bind(this.sightingController)
+      "/:id",
+      this.sightingController.getById.bind(this.sightingController)
+    );
+    this.router.post(
+      "/",
+      this.sightingController.createOne.bind(this.sightingController)
     );
   }
 
