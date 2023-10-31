@@ -19,27 +19,27 @@ module.exports = {
 
       date: {
         type: Sequelize.DATE,
-        unique: false,
-        allowNull: false,
+        // unique: false,
+        // allowNull: false,
       },
       location: {
         type: Sequelize.STRING,
-        unique: false,
-        allowNull: false,
+        // unique: false,
+        // allowNull: false,
       },
       notes: {
         type: Sequelize.TEXT,
-        unique: false,
-        allowNull: false,
+        // unique: false,
+        // allowNull: false,
       },
 
       created_at: {
-        allowNull: false,
+        // allowNull: false,
         type: Sequelize.DATE,
       },
 
       updated_at: {
-        allowNull: false,
+        // allowNull: false,
         type: Sequelize.DATE,
       },
     });

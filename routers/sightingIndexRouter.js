@@ -13,7 +13,9 @@ class sightingIndexRouter {
     // router.get("/base", this.controller.baseMethod);
     // router.get("/emAll/:name", this.controller.pokemon);
 
-    router.get("/:sightingID", this.controller.getSighting);
+    // router.get("/:sightingID", this.controller.getSighting);
+    router.get("/getAll", this.controller.getAll);
+    // router.get("/:sightingID", this.controller.getOne.bind(this.controller));
 
     return router;
   };

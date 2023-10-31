@@ -26,7 +26,7 @@ module.exports = {
         {
           date: new Date(2000, 9, 2),
           location: "Warren County, New Jersey, USA",
-          notes: "helo",
+          notes: "helasdasdao",
           created_at: new Date(),
           updated_at: new Date(),
         },
