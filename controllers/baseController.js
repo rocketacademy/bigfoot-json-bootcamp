@@ -7,6 +7,11 @@ class BaseController {
     try {
       let whereConditions = {};
 
+      // If there's a sightingId in the params, add it to the where conditions
+      if (req.params.id) {
+        whereConditions.sighting_id = req.params.id; // Adjust the 'sighting_id' if it's named differently in your model
+      }
+
       // Filtering logic
       for (let key in req.query) {
         if (key !== "sortBy" && key !== "order") {
@@ -52,6 +57,21 @@ class BaseController {
   async createOne(req, res) {
     try {
       const newRecord = await this.model.create(req.body);
+      res.status(201).json(newRecord);
+    } catch (error) {
+      res
+        .status(400)
+        .json({ message: "Error creating record", error: error.message });
+    }
+  }
+
+  async createWithParentId(req, res) {
+    try {
+      const bodyWithParentId = {
+        ...req.body,
+        parent_id: req.params.parentId,
+      };
+      const newRecord = await this.model.create(bodyWithParentId);
       res.status(201).json(newRecord);
     } catch (error) {
       res

@@ -10,16 +10,22 @@ const PORT = process.env.PORT;
 
 // importing DB
 const db = require("./db/models/index");
-const { sighting } = db;
+const { sighting, comment } = db;
 
 // import controllers
 const SightingController = require("./controllers/SightingController.js");
 const sightingController = new SightingController(sighting);
 
+const CommentController = require("./controllers/CommentController.js");
+const commentController = new CommentController(comment);
+
 // import routers
 
 const SightingRouter = require("./routers/SightingRouter.js");
 const sightingRouter = new SightingRouter(sightingController, express);
+
+const CommentRouter = require("./routers/CommentRouter.js");
+const commentRouter = new CommentRouter(commentController, express);
 
 // Setting up middleware
 app.use(express.json());
@@ -27,8 +33,8 @@ app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 
 // Routing requests
-
 app.use("/sightings", sightingRouter.route());
+app.use("/sightings/:id/comments", commentRouter.route());
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
