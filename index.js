@@ -17,6 +17,8 @@ app.get("/sightings", async (req, res) => {
   const sightingFilter = req.query; //object containing filter keys and filter values from the searchParams
   //sightingQuery
   const sightings = await getSightings();
+  sightings.forEach((sighting,index)=>sighting.INDEX = index);
+  console.log(sightings)
   const filteredSightings = sightings.filter((sighting) => { // filters sightings
     return Object.keys(sightingFilter).reduce((acc, key) => {
       if (key.includes('sort')) {
@@ -28,7 +30,6 @@ app.get("/sightings", async (req, res) => {
       }
     }, true)
   })
-  console.log(filteredSightings)
   filteredSightings.sort((a, b)=>{
     const firstValue = a[sightingFilter.sortBy.toUpperCase()];
     const secondValue = b[sightingFilter.sortBy.toUpperCase()];
@@ -38,7 +39,6 @@ app.get("/sightings", async (req, res) => {
       return (firstValue > secondValue) ? -1 : (firstValue < secondValue) ? 1 : 0;
     }   
   })
-  console.log(filteredSightings)
     
   res.json(filteredSightings);
 });
