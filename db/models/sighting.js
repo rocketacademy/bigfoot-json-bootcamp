@@ -12,6 +12,9 @@ module.exports = (sequelize, DataTypes) => {
   // Similar structure to the migration, except the primary key and created_at/updated_at
   Sighting.init(
     {
+      // date: DataTypes.DATE,
+      // location: DataTypes.STRING,
+      // notes: DataTypes.TEXT,
       date: {
         type: DataTypes.DATE,
       },
@@ -24,7 +27,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "users",
+      // this should be the FILE NAME! so it's sighting with small s
+      modelName: "sighting",
       timestamps: true,
       underscored: true,
     }

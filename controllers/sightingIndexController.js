@@ -25,6 +25,26 @@ class SightingIndexController extends BaseController {
     }
     return res.json({ success: true, data: output });
   };
+
+  createOne = async (req, res) => {
+    console.log("createOne");
+    const { date, location, notes } = req.body;
+
+    if (!date || !location || !notes) {
+      return res.status(400).json({ success: false, msg: "Input error!" });
+    }
+
+    try {
+      const newSighting = await this.model.create({
+        date,
+        location,
+        notes,
+      });
+      return res.json({ success: true, sighting: newSighting });
+    } catch (err) {
+      return res.status(400).json({ success: false, msg: err.message });
+    }
+  };
 }
 
 module.exports = SightingIndexController;

@@ -14,28 +14,25 @@ class BaseController {
     return res.json({ success: true, data: output });
   };
 
-  createOne = async (req, res) => {
-    console.log("createOne");
-    const { date, location, notes } = req.body;
-    console.log(date);
-    console.log(location);
-    console.log(notes);
+  // createOne = async (req, res) => {
+  //   console.log("createOne");
+  //   const { date, location, notes } = req.body;
 
-    if (!date || !location || !notes) {
-      return res.status(400).json({ success: false, msg: "Input error!" });
-    }
+  //   if (!date || !location || !notes) {
+  //     return res.status(400).json({ success: false, msg: "Input error!" });
+  //   }
 
-    try {
-      const newSighting = await this.model.create({
-        date,
-        location,
-        notes,
-      });
-      return res.josn({ success: true, sighting: newSighting });
-    } catch (err) {
-      return res.status(400).json({ success: false, msg: err });
-    }
-  };
+  //   try {
+  //     const newSighting = await this.model.create({
+  //       date,
+  //       location,
+  //       notes,
+  //     });
+  //     return res.josn({ success: true, sighting: newSighting });
+  //   } catch (err) {
+  //     return res.status(400).json({ success: false, msg: err });
+  //   }
+  // };
 }
 
 module.exports = BaseController;
