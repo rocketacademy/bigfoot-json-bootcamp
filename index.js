@@ -45,6 +45,7 @@ app.use(express.urlencoded({ extended: true }));
 app.get("/", async (req, res) => {
   // Sequelize Model Query Methods
   try {
+    console.log("in the default / path");
     const output = await sighting.findAll();
     return res.json({ success: true, data: output });
   } catch (err) {

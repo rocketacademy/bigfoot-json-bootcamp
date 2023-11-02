@@ -4,8 +4,9 @@ module.exports = (sequelize, DataTypes) => {
   class Sighting extends Model {
     // create our associations
 
-    static association(models) {
+    static associate(models) {
       // create associations in here
+      // this.hasMany(models.comment);
     }
   }
 
