@@ -8,10 +8,6 @@ class SightingIndexController extends BaseController {
     this.categoryModel = categoryModel;
   }
 
-  // test = (req, res) => {
-  //   return res.send("I am in my Sighting Controller");
-  // };
-
   getSighting = async (req, res) => {
     console.log("i am in sighting controller");
     const { sightingIndex } = req.params;

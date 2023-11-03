@@ -6,7 +6,8 @@ class sightingsRouter {
 
   routes = () => {
     let router = this.express.Router();
-    // router.get("/hello", this.controller.test);
+    //get ALL sightings
+    router.get("/allSightings", this.controller.baseGetAll);
 
     router.post("/:sightingIndex/comments", this.controller.addComment);
     router.get("/:sightingIndex", this.controller.getSighting);

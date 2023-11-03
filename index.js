@@ -14,13 +14,13 @@ require("dotenv").config();
 const db = require("./db/models/index");
 const { sighting, comment, category } = db;
 
-// Import Controllers
+// Import Controllers (Classes)
 const SightingIndexController = require("./controllers/sightingIndexController");
-// const CommentsController = require("./controllers/commentsController");
+const CategoriesController = require("./controllers/categoriesController");
 
-// Import Routers
+// Import Routers (Classes)
 const SightingsRouter = require("./routers/sightingsRouter");
-// const CommentsRouter = require("./routers/commentsRouter");
+const CategoriesRouter = require("./routers/categoriesRouter");
 
 // Initialise Controllers First (will need to pass in controllers into respective routers)
 const sightingsController = new SightingIndexController(
@@ -28,11 +28,11 @@ const sightingsController = new SightingIndexController(
   comment,
   category
 );
-// const commentsController = new CommentsController(comment);
+const categoriesController = new CategoriesController(category);
 
-// Initialise Routers with respective Controllers
+// Initialise Routers with respective Controllers. Pass Express in as well
 const sightingsRouter = new SightingsRouter(sightingsController, express);
-// const commentsRouter = new CommentsRouter(commentsController, express);
+const categoriesRouter = new CategoriesRouter(categoriesController, express);
 
 const PORT = process.env.PORT;
 const app = express();
@@ -59,11 +59,8 @@ app.get("/", async (req, res) => {
   }
 });
 
-// app.get("/", async (req, res) => {
-//   // Sequelize Model Query Methods
-// });
-
 // Use initialised routers to handle requests.
+app.use("/categories", categoriesRouter.routes());
 app.use("/sightings", sightingsRouter.routes()); // .routes is just the name of the function you give inside the router. convention to use routes.
 
 app.listen(PORT, () => {
