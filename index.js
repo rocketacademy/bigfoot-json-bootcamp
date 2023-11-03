@@ -12,21 +12,27 @@ require("dotenv").config();
  */
 // importing DB
 const db = require("./db/models/index");
-const { sighting } = db;
+const { sighting, comment, category } = db;
 
 // Import Controllers
 const SightingIndexController = require("./controllers/sightingIndexController");
-// const BaseController = require("./controllers/baseController");
+// const CommentsController = require("./controllers/commentsController");
 
 // Import Routers
-const SightingRouter = require("./routers/sightingRouter");
+const SightingsRouter = require("./routers/sightingsRouter");
+// const CommentsRouter = require("./routers/commentsRouter");
 
 // Initialise Controllers First (will need to pass in controllers into respective routers)
-// const baseController = new BaseController();
-const sightingController = new SightingIndexController(sighting);
+const sightingsController = new SightingIndexController(
+  sighting,
+  comment,
+  category
+);
+// const commentsController = new CommentsController(comment);
 
 // Initialise Routers with respective Controllers
-const sightingRouter = new SightingRouter(sightingController, express);
+const sightingsRouter = new SightingsRouter(sightingsController, express);
+// const commentsRouter = new CommentsRouter(commentsController, express);
 
 const PORT = process.env.PORT;
 const app = express();
@@ -58,7 +64,7 @@ app.get("/", async (req, res) => {
 // });
 
 // Use initialised routers to handle requests.
-app.use("/sightings", sightingRouter.routes()); // .routes is just the name of the function you give inside the router. convention to use routes.
+app.use("/sightings", sightingsRouter.routes()); // .routes is just the name of the function you give inside the router. convention to use routes.
 
 app.listen(PORT, () => {
   console.log(`Express app listening on port ${PORT}!`);

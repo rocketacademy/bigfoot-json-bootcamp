@@ -9,7 +9,7 @@ module.exports = {
      * Example:
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
-    await queryInterface.createTable("comments", {
+    await queryInterface.createTable("categories", {
       id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
@@ -17,23 +17,16 @@ module.exports = {
         primaryKey: true,
       },
 
-      content: {
-        type: Sequelize.TEXT,
+      name: {
+        type: Sequelize.STRING,
+        allowNull: false,
       },
-      sighting_id: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: "sightings",
-          key: "id",
-        },
-      },
+
       created_at: {
-        // allowNull: false,
         type: Sequelize.DATE,
       },
 
       updated_at: {
-        // allowNull: false,
         type: Sequelize.DATE,
       },
     });
@@ -46,6 +39,6 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
-    await queryInterface.dropTable("comments");
+    await queryInterface.dropTable("categories");
   },
 };

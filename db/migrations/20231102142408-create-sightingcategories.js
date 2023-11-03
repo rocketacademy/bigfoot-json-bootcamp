@@ -9,31 +9,35 @@ module.exports = {
      * Example:
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
-    await queryInterface.createTable("comments", {
+    await queryInterface.createTable("sighting_categories", {
       id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
         allowNull: false,
         primaryKey: true,
       },
-
-      content: {
-        type: Sequelize.TEXT,
-      },
       sighting_id: {
         type: Sequelize.INTEGER,
+        allowNull: false,
         references: {
-          model: "sightings",
+          model: "sightings", // referencing table name verbatim. this is the point of entry for sequelize
+          key: "id",
+        },
+      },
+      category_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: "categories",
           key: "id",
         },
       },
       created_at: {
-        // allowNull: false,
+        allowNull: false,
         type: Sequelize.DATE,
       },
-
       updated_at: {
-        // allowNull: false,
+        allowNull: false,
         type: Sequelize.DATE,
       },
     });
@@ -46,6 +50,6 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
-    await queryInterface.dropTable("comments");
+    await queryInterface.dropTable("sighting_categories");
   },
 };

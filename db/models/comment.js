@@ -11,13 +11,21 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       // this.belongsTo(models.sighting, { as: "author" });
       // Comment.belongsTo(models.sighting);
-      // this.belongsTo(models.sighting);
+      this.belongsTo(models.sighting);
     }
   }
   Comment.init(
     {
-      content: DataTypes.TEXT,
-      SightingID: DataTypes.INTEGER,
+      content: {
+        type: DataTypes.STRING,
+      },
+      sighting_id: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: "sightings",
+          key: "id",
+        },
+      },
     },
     {
       sequelize,
