@@ -6,7 +6,7 @@ class CategoriesController extends BaseController {
     this.model = model;
   }
 
-  // Create a new Category (POST request) with model query method add
+  // Create a new Category to Database (POST request) with model query method add
   addCategory = async (req, res) => {
     console.log("yo");
     const { name } = req.body; // from the request body (post request)

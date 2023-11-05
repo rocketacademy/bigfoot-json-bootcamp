@@ -9,17 +9,34 @@ class sightingsRouter {
     //get ALL sightings
     router.get("/allSightings", this.controller.baseGetAll);
 
-    router.post("/:sightingIndex/comments", this.controller.addComment);
+    router.get(
+      "/:sightingIndex/getAllComments",
+      this.controller.getAllComments
+    );
+    router.get(
+      "/:sightingIndex/getCategories",
+      this.controller.getAssignedCategories
+    );
+
+    router.post("/:sightingIndex/addComments", this.controller.addComment);
     router.get("/:sightingIndex", this.controller.getSighting);
 
     // router.post("/newSighting", this.controller.createSighting);
 
     router.put(
-      "/sightingCategory",
+      "/assignSightingCategory",
       this.controller.associateCategoryToSighting
     );
+    router.put(
+      "/removeAssignedCategory",
+      this.controller.removeAssignedCategory
+    );
+
     router.put("/:commentIndex/comments", this.controller.editComment);
-    router.delete("/:commentIndex/comments", this.controller.deleteComment);
+    router.delete(
+      "/:commentIndex/deleteComment",
+      this.controller.deleteComment
+    );
     return router;
   };
 }

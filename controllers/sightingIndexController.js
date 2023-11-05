@@ -9,15 +9,18 @@ class SightingIndexController extends BaseController {
   }
 
   getSighting = async (req, res) => {
-    console.log("i am in sighting controller");
     const { sightingIndex } = req.params;
 
     // Find by Primary Key, a Sequelize Model Query method.
-    const output = await this.model.findByPk(sightingIndex);
-    if (!output) {
-      return res.status(404).json({ success: false, msg: "User not found." });
+    try {
+      const output = await this.model.findByPk(sightingIndex);
+      // if (!output) {
+      //   return res.status(404).json({ success: false, msg: "User not found." });
+      // }
+      return res.json({ success: true, data: output });
+    } catch (err) {
+      return res.status(404).json({ success: false, data: "No Id." });
     }
-    return res.json({ success: true, data: output });
   };
 
   // Creating a new row in the sightings table (new model) (Note that there is no Comments)
@@ -43,13 +46,49 @@ class SightingIndexController extends BaseController {
 
   associateCategoryToSighting = async (req, res) => {
     const { sightingId, categoryId } = req.body;
+    console.log("the ids are: ", sightingId, categoryId);
     console.log("yay");
     const sighting = await this.model.findByPk(sightingId);
     const category = await this.categoryModel.findByPk(categoryId);
 
-    await sighting.setCategories(category);
+    console.log("added category: ", category);
 
-    return res.json({ success: true, sighting, category });
+    await sighting.addCategories(category);
+
+    return res.json({ success: true, data: category });
+  };
+
+  getAssignedCategories = async (req, res) => {
+    const { sightingIndex } = req.params;
+    console.log("assigned categories of: ", sightingIndex);
+
+    const sighting = await this.model.findByPk(sightingIndex);
+    // Sequelize generated Method getCategories
+    const associatedCategories = await sighting.getCategories();
+
+    return res.json({ success: true, data: associatedCategories });
+  };
+
+  removeAssignedCategory = async (req, res) => {
+    const { sightingId, categoryId } = req.body;
+
+    const sighting = await this.model.findByPk(sightingId);
+    const category = await this.categoryModel.findByPk(categoryId);
+    await sighting.removeCategory(category);
+
+    return res.json({ success: true, removed: category });
+  };
+
+  getAllComments = async (req, res) => {
+    const { sightingIndex } = req.params;
+    try {
+      const allComments = await this.commentModel.findAll({
+        where: { sighting_id: sightingIndex },
+      });
+      return res.json({ success: true, data: allComments });
+    } catch (err) {
+      return res.json({ success: false, msg: err.message });
+    }
   };
 
   deleteComment = async (req, res) => {
@@ -58,7 +97,6 @@ class SightingIndexController extends BaseController {
     try {
       const commentToBeDeleted = await this.commentModel.findByPk(commentIndex);
       await commentToBeDeleted.destroy();
-      // await commentToBeDeleted.destroy({where:{id:commentIndex}});
 
       return res.json({
         success: true,
@@ -97,8 +135,8 @@ class SightingIndexController extends BaseController {
     const { sightingIndex } = req.params; // from the URL (post request)
     const { content, sightingsID } = req.body; // from the request body (post request)
 
-    console.log("req params from URL is: ", sightingIndex);
-    console.log("sightingsID from body is: ", sightingsID);
+    // console.log("req params from URL is: ", sightingIndex);
+    // console.log("sightingsID from body is: ", sightingsID);
 
     /**Foong's Method -  Lazy Loading -
      * Does not require the secondary table's model to be passed in at root index.js level */
@@ -139,7 +177,7 @@ class SightingIndexController extends BaseController {
         // Q: Having difficulty understanding this sightingsId. sightingsId, sightingsID, sighting_id
         sighting_id: sightingIndex,
       });
-      return res.json(newComment);
+      return res.json({ data: newComment });
     } catch (err) {
       return res.status(400).json({ error: true, msg: err.message });
     }
