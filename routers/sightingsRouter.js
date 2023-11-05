@@ -18,6 +18,8 @@ class sightingsRouter {
       this.controller.getAssignedCategories
     );
 
+    router.post("/addSighting", this.controller.createSighting);
+
     router.post("/:sightingIndex/addComments", this.controller.addComment);
     router.get("/:sightingIndex", this.controller.getSighting);
 
@@ -32,7 +34,7 @@ class sightingsRouter {
       this.controller.removeAssignedCategory
     );
 
-    router.put("/:commentIndex/comments", this.controller.editComment);
+    router.put("/:commentIndex/editComment", this.controller.editComment);
     router.delete(
       "/:commentIndex/deleteComment",
       this.controller.deleteComment
