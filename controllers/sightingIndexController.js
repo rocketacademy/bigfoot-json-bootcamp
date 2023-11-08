@@ -14,9 +14,9 @@ class SightingIndexController extends BaseController {
     // Find by Primary Key, a Sequelize Model Query method.
     try {
       const output = await this.model.findByPk(sightingIndex);
-      // if (!output) {
-      //   return res.status(404).json({ success: false, msg: "User not found." });
-      // }
+      if (!output) {
+        return res.status(404).json({ success: false, msg: "User not found." });
+      }
       return res.json({ success: true, data: output });
     } catch (err) {
       return res.status(404).json({ success: false, data: "No Id." });
