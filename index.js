@@ -12,7 +12,7 @@ const sightingsController = new SightingsController(getSightings);
 const SightingsRouter = require("./Routers/SightingRouter");
 const sightingsRouter = new SightingsRouter(sightingsController, express);
 
-app.use("/", sightingsRouter.route());
+app.use("/sightings", sightingsRouter.route());
 
 app.listen(PORT, () => {
   console.log(`Express app listening on port ${PORT}!`);

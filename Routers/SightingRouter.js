@@ -6,7 +6,8 @@ class SightingsRouter {
 
   route = () => {
     let router = this.express.Router();
-    router.get("/sightings", this.controller.getAllData);
+    router.get("/", this.controller.getAllData);
+    router.get("/:sightingIndex", this.controller.getOneData);
     return router;
   };
 }
