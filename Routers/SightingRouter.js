@@ -8,6 +8,7 @@ class SightingsRouter {
     let router = this.express.Router();
     router.get("/", this.controller.getAllData);
     router.get("/:sightingIndex", this.controller.getOneData);
+    router.get("/:filter/:filterData", this.controller.getFilterData);
     return router;
   };
 }
