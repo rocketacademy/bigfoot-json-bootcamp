@@ -16,9 +16,9 @@ class SightingsController {
   getFilterData = async (req, res) => {
     const sightings = await this.getSightings();
     const filter = req.params.filter;
-    const filterData = req.params.filterData.toLowerCase();
+    const filterData = req.params.filterData;
     const output = sightings.filter(
-      (data) => data[filter] && data[filter].includes(filterData)
+      (data) => data[filter].toLowerCase() && data[filter].includes(filterData)
     );
     res.json(output);
   };
