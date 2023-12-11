@@ -18,7 +18,7 @@ class SightingsController {
     const filter = req.params.filter;
     const filterData = req.params.filterData;
     const output = sightings.filter(
-      (data) => data[filter].toLowerCase() && data[filter].includes(filterData)
+      (data) => data[filter] && data[filter].toLowerCase().includes(filterData)
     );
     res.json(output);
   };
