@@ -9,7 +9,6 @@ class SightingsRouter {
     router.get("/", this.controller.getAllData);
     router.get("/:sightingIndex", this.controller.getOneData);
     router.get("/:filter/:filterData", this.controller.getFilterData);
-    router.get("/sort/:sort/:direction", this.controller.getSortData);
     return router;
   };
 }

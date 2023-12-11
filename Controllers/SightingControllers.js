@@ -22,23 +22,6 @@ class SightingsController {
     );
     res.json(output);
   };
-
-  getSortData = async (req, res) => {
-    const sightings = await this.getSightings();
-    const sort = req.params.sort;
-    const direction = req.params.direction;
-    sightings.sort((a, b) =>
-      !a[sort]
-        ? 1
-        : !b[sort]
-        ? -1
-        : direction === "ascending"
-        ? a[sort].match(/\d+/) - b[sort].match(/\d+/)
-        : b[sort].match(/\d+/) - a[sort].match(/\d+/)
-    );
-
-    res.json(sightings);
-  };
 }
 
 module.exports = SightingsController;
