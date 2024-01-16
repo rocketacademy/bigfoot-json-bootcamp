@@ -17,6 +17,7 @@ app.get("/sightings", async (req, res) => {
 
 app.get("/sightings/:sightingsIndex", async(req,res)=>{
   const sightings = await getSightings()
+  res.send(sightings[req.params.sightingsIndex])
 })
 
 app.listen(PORT, () => {
