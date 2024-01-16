@@ -12,17 +12,24 @@ app.use(cors())
 
 //get filtered results by YEAR. 
 app.get("/sightings/filter", async(req,res)=>{
-  const sightings = await getSightings()
-  const { YEAR, SEASON, MONTH, STATE, COUNTY  } = req.query
-  console.log(YEAR)
-  let filterSightings = sightings.filter((sighting)=>sighting.YEAR == YEAR)
-  res.send(filterSightings)
+  const sightings = await getSightings() 
+  const filters = req.query
+  const filteredSightings = sightings.filter(sighting =>{
+    let isValid = true
+    for (let key in filters){
+      console.log(key, sighting[key], filters[key])
+      isValid = isValid && sighting[key] ==filters[key]
+    }
+    return isValid
+  })
+  res.send(filteredSightings)
 })
+// do i have to declare this all the time i want to use it because it's a promise? can i make this a global variable?
+//https://www.geeksforgeeks.org/how-to-implement-search-and-filtering-in-a-rest-api-with-node-js-and-express-js/
 
 //get all sightings list
 app.get("/sightings", async (req, res) => {
   const sightings = await getSightings();
-  // console.log(sightings[1].YEAR)
   res.json(sightings);
 });
 
