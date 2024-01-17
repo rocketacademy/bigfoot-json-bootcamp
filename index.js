@@ -10,7 +10,7 @@ const app = express();
 //cors middleware
 app.use(cors())
 
-//get filtered results by YEAR. 
+//get filtered results. 
 app.get("/sightings/filter", async(req,res)=>{
   const sightings = await getSightings() 
   const filters = req.query
