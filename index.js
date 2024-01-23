@@ -1,6 +1,6 @@
-import express from "express";
-import cors from "cors";
-import getSightings from "./utils.js";
+const cors = require("cors");
+const express = require("express");
+const { getSightings } = require("./utils.js");
 
 const PORT = process.env.PORT;
 const app = express();
