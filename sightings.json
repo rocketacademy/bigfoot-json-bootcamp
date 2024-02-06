@@ -743,7 +743,7 @@
     "REPORT_CLASS": "Class A"
   },
   {
-    "YEAR": "92 or 93",
+    "YEAR": "1992 or 1993",
     "SEASON": "Spring",
     "MONTH": "March",
     "DATE": "5",
@@ -762,7 +762,7 @@
     "REPORT_CLASS": "Class A"
   },
   {
-    "YEAR": "97-98",
+    "YEAR": "1997-1998",
     "SEASON": "Winter",
     "MONTH": "January",
     "DATE": "4",
@@ -1046,8 +1046,9 @@
     "REPORT_CLASS": null
   },
   {
-    "YEAR": "Mid- to Late-1970s",
+    "YEAR": "1970",
     "SEASON": "Summer",
+    "MONTH": "June",
     "STATE": "Louisiana",
     "COUNTY": "Rapides Parish",
     "LOCATION_DETAILS": "Near the Indian Creek camping area near the town of Woodworth about 15 mins south of Alexandria",
