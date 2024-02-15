@@ -8,14 +8,21 @@ const app = express();
 app.use(cors());
 
 app.get("/sightings", async (req, res) => {
-  const sightings = await getSightings();
-  console.log(req.query);
+  let sightings = await getSightings();
+
+  const { year } = req.query;
+
+  if (year) {
+    sightings = sightings.filter(
+      (item) => item.YEAR && item.YEAR.includes(year)
+    );
+  }
   res.json(sightings);
 });
 
 app.get("/sightings/:sightingIndex", async (req, res) => {
   const { sightingIndex } = req.params;
-  console.log(sightingIndex);
+
   const sightings = await getSightings();
 
   res.json(sightings[sightingIndex]);
