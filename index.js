@@ -1,15 +1,20 @@
-const express = require('express')
-const { getSightings } = require('./utils.js')
-require('dotenv').config()
-
-const PORT = process.env.PORT;
+import express from "express";
+import { getSightings } from "./utils.js";
+import dotenv from "dotenv";
+import User, { sequelize } from "./models/User.js";
+// import Post from "./models/Post.js";
+dotenv.config();
 const app = express();
-
-app.get("/sightings", async (req, res) => {
-  const sightings = await getSightings();
-  res.json(sightings);
-});
-
+app.use(express.json());
+(async () => {
+  try {
+    await sequelize.authenticate();
+    console.log("Database connection has been established successfully.");
+  } catch (error) {
+    console.error("Unable to connect to the database:", error);
+  }
+})();
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Express app listening on port ${PORT}!`);
 });
