@@ -31,7 +31,7 @@ const Post = sequelize.define(
       defaultValue: 0,
     },
     comment: {
-      type: DataTypes.ARRAY(DataTypes.STRING), // Updated to ARRAY of STRING
+      type: DataTypes.ARRAY(DataTypes.STRING), 
     },
   },
   {

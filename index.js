@@ -69,7 +69,7 @@ app.post("/posts", async (req, res) => {
       title,
       desc,
       likes: 0,
-      comment: [], // Initialize comment as an empty array
+      comment: [], 
     });
 
     res.json(newPost);
@@ -134,27 +134,6 @@ app.put("/posts/:id/like", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
-
-// Add a comment to a post
-// app.post("/posts/:postId/comment", async (req, res) => {
-//   const postId = req.params.postId;
-//   const { comment } = req.body;
-
-//   try {
-//     const post = await Post.findByPk(postId);
-//     if (!post) {
-//       return res.status(404).json({ error: "Post not found" });
-//     }
-
-//     post.comment = comment;
-//     await post.save();
-
-//     res.json(post);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: "Internal Server Error" });
-//   }
-// });
 
 app.listen(PORT, () => {
   console.log(`Express app listening on port ${PORT}!`);
